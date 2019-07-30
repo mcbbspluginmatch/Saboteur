@@ -79,7 +79,8 @@ public class ActionbarAPI {
 			e.printStackTrace();
 		}
 	}
-
+	
+	//制造闪烁的效果
 	public static void sendActionBar(final Player player, final String message, int duration) {
 		ActionbarAPI.sendActionBar(player, message);
 		if (duration >= 0) new BukkitRunnable() {
