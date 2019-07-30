@@ -13,7 +13,7 @@ package net.augcloud.arisa.saboteur.api;
 /**
 @author Arisa
 @date 2019年7月30日 下午4:18:30*/
-public class PlayerPlotSquared {
+public class PlayerPlotSquared implements APIOfPlayer {
 
 	/**
 	PlayerPlotSquared

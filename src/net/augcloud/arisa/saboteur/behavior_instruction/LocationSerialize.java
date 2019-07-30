@@ -1,12 +1,12 @@
-/**  
+/**
 All rights Reserved, Designed By www.aug.cloud
-LocationSerialize.java   
-@Package net.augcloud.arisa.saboteur.behavior_instruction   
-@Description: 
-@author: Arisa   
-@date:   2019年7月26日 下午1:53:55   
-@version V1.0 
-@Copyright: 2019 
+LocationSerialize.java
+@Package net.augcloud.arisa.saboteur.behavior_instruction
+@Description:
+@author: Arisa
+@date:   2019年7月26日 下午1:53:55
+@version V1.0
+@Copyright: 2019
 */
 package net.augcloud.arisa.saboteur.behavior_instruction;
 

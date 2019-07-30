@@ -1,12 +1,12 @@
-/**  
+/**
 All rights Reserved, Designed By www.aug.cloud
-AntiAttackValueBlockData.java   
-@Package net.augcloud.arisa.saboteur.behavior_instruction   
-@Description: 
-@author: Arisa   
-@date:   2019年7月25日 下午10:48:28   
-@version V1.0 
-@Copyright: 2019 
+AntiAttackValueBlockData.java
+@Package net.augcloud.arisa.saboteur.behavior_instruction
+@Description:
+@author: Arisa
+@date:   2019年7月25日 下午10:48:28
+@version V1.0
+@Copyright: 2019
 */
 package net.augcloud.arisa.saboteur.behavior_instruction;
 
@@ -57,46 +57,46 @@ public class AntiAttackValueBlockData {
 		_qualitymeta.setHasAntiAttackValue(true);
 		_qualitymeta.setCanbebreken(true);
 		_qualitymeta.setId(id);
-		_qualitymeta.setAntiAttackValue(DefaultValue);
+		_qualitymeta.setAntiAttackValue(this.DefaultValue);
 		return _qualitymeta;
 	}
 
-	/**   
-	hashCode   
+	/**
+	hashCode
 	@Description:
-	@return   
+	@return
 	@see java.lang.Object#hashCode()*/
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + this.DefaultValue;
-		result = prime * result + ((this.data == null) ? 0 : this.data.hashCode());
+		result = (prime * result) + this.DefaultValue;
+		result = (prime * result) + ((this.data == null) ? 0 : this.data.hashCode());
 		return result;
 	}
 
-	/**   
-	equals   
+	/**
+	equals
 	@Description:
 	@param obj
-	@return   
+	@return
 	@see java.lang.Object#equals(java.lang.Object)*/
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) { return true; }
-		if (! (obj instanceof AntiAttackValueBlockData)) { return false; }
+		if (this == obj) return true;
+		if (! (obj instanceof AntiAttackValueBlockData)) return false;
 		AntiAttackValueBlockData other = (AntiAttackValueBlockData) obj;
-		if (this.DefaultValue != other.DefaultValue) { return false; }
+		if (this.DefaultValue != other.DefaultValue) return false;
 		if (this.data == null) {
-			if (other.data != null) { return false; }
-		} else if (! this.data.equals(other.data)) { return false; }
+			if (other.data != null) return false;
+		} else if (! this.data.equals(other.data)) return false;
 		return true;
 	}
 
-	/**   
-	toString   
+	/**
+	toString
 	@Description:
-	@return   
+	@return
 	@see java.lang.Object#toString()*/
 	@Override
 	public String toString() {
@@ -113,15 +113,15 @@ public class AntiAttackValueBlockData {
 		return builder.toString();
 	}
 
-	/**  
-	getData 
+	/**
+	getData
 	@Description: 外部成员通过getter访问getData字段
 	@return: HashMap<Material,Integer>*/
 	public HashMap<Material, Integer> getData() {
 		return this.data;
 	}
 
-	/**  
+	/**
 	@Title:  setData
 	@Description: 外部成员通过setter方法修改字段
 	@return: HashMap<Material,Integer>*/
@@ -129,15 +129,15 @@ public class AntiAttackValueBlockData {
 		this.data = data;
 	}
 
-	/**  
-	getDefaultValue 
+	/**
+	getDefaultValue
 	@Description: 外部成员通过getter访问getDefaultValue字段
 	@return: int*/
 	public int getDefaultValue() {
 		return this.DefaultValue;
 	}
 
-	/**  
+	/**
 	@Title:  setDefaultValue
 	@Description: 外部成员通过setter方法修改字段
 	@return: int*/

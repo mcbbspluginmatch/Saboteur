@@ -1,12 +1,12 @@
-/**  
+/**
 All rights Reserved, Designed By www.aug.cloud
-MenuClickListener.java   
-@Package net.augcloud.arisa.saboteur.menu   
-@Description: 
-@author: Arisa   
-@date:   2019年7月29日 下午10:24:20   
-@version V1.0 
-@Copyright: 2019 
+MenuClickListener.java
+@Package net.augcloud.arisa.saboteur.menu
+@Description:
+@author: Arisa
+@date:   2019年7月29日 下午10:24:20
+@version V1.0
+@Copyright: 2019
 */
 package net.augcloud.arisa.saboteur.menu;
 
@@ -44,16 +44,16 @@ import net.augcloud.arisa.saboteur.sqlite.SQLUtils;
 @date 2019年7月29日 下午10:24:20*/
 public class MenuClickListener extends PluginData implements Listener {
 	public static String Menu_title;
-	private int[] slots = { 10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34 };
+	private final int[] slots = { 10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34 };
 
-	/**   
-	MenuClickListener   
+	/**
+	MenuClickListener
 	@Description:*/
 	public MenuClickListener() {
 	}
 
 	public static void inits() {
-		Menu_title = Utils._ReplaceColour(SetFiles.getConfig().getString("menu_title"));
+		MenuClickListener.Menu_title = Utils._ReplaceColour(SetFiles.getConfig().getString("menu_title"));
 	}
 
 	@EventHandler
@@ -62,40 +62,40 @@ public class MenuClickListener extends PluginData implements Listener {
 		if (! (_player instanceof Player)) return;
 		Player player = (Player) _player;
 		Inventory inv = e.getClickedInventory();
-		if (inv == null) { return; }
+		if (inv == null) return;
 		ItemStack item = inv.getItem(0);
-		if (item == null || ! item.hasItemMeta()) { return; }
+		if ((item == null) || ! item.hasItemMeta()) return;
 		ItemMeta ids = item.getItemMeta();
 		if (ids.getDisplayName().equals("您")) {
 			e.setCancelled(true);
 			ItemStack CurrentItem = e.getCurrentItem();
-			if (CurrentItem == null || CurrentItem.hasItemMeta() == false) { return; }
+			if ((CurrentItem == null) || (CurrentItem.hasItemMeta() == false)) return;
 			String Item_Name = CurrentItem.getItemMeta().getDisplayName();
-			if (Item_Name.equalsIgnoreCase("?")) { return; }
+			if (Item_Name.equalsIgnoreCase("?")) return;
 			if (Item_Name.equalsIgnoreCase("下一页")) {
-				MenuSetup menuSetup = MenuManager._get(player);
+				MenuSetup menuSetup = PluginData.MenuManager._get(player);
 				if (menuSetup == null) {
 					menuSetup = new MenuSetup(player);
 					menuSetup.initOfMenu();
-					MenuManager.add(player, menuSetup);
-					menuSetup = MenuManager._get(player);
+					PluginData.MenuManager.add(player, menuSetup);
+					menuSetup = PluginData.MenuManager._get(player);
 				}
 
 				menuSetup.nextPage();
-				MenuManager.add(player, menuSetup);
+				PluginData.MenuManager.add(player, menuSetup);
 
 				return;
 			}
 
 			if (Item_Name.equalsIgnoreCase("上一页")) {
-				MenuSetup menuSetup = MenuManager._get(player);
+				MenuSetup menuSetup = PluginData.MenuManager._get(player);
 				if (menuSetup == null) {
 					menuSetup = new MenuSetup(player);
 					menuSetup.initOfMenu();
-					MenuManager.add(player, menuSetup);
+					PluginData.MenuManager.add(player, menuSetup);
 
-					menuSetup = MenuManager._get(player);
-					MenuManager.add(player, menuSetup);
+					menuSetup = PluginData.MenuManager._get(player);
+					PluginData.MenuManager.add(player, menuSetup);
 				}
 
 				menuSetup.lastPage();
@@ -128,13 +128,13 @@ public class MenuClickListener extends PluginData implements Listener {
 					boolean a = ! SQLUtils.isPeaceState(Bukkit.getOfflinePlayer(Key).getUniqueId().toString());
 					boolean b = ! SQLUtils.isPeaceState(player);
 					boolean c = ! PluginData.PlayerSafeModeManager.getSafeMode(Key);
-					lore.add(" §7- §3对方不和平? " + format(a));
-					lore.add(" §7- §3您不和平? " + format(b));
-					lore.add(" §7- §3对方不被保护? " + format(c));
+					lore.add(" §7- §3对方不和平? " + MenuClickListener.format(a));
+					lore.add(" §7- §3您不和平? " + MenuClickListener.format(b));
+					lore.add(" §7- §3对方不被保护? " + MenuClickListener.format(c));
 
 					if (! (a && b && c)) item = new ItemStack(Material.RED_STAINED_GLASS);
 					lore.add("");
-					lore.add("§7- §3掠夺 " + format(a && b && c));
+					lore.add("§7- §3掠夺 " + MenuClickListener.format(a && b && c));
 					lore.add("§7- §a点击可传送过去");
 					ids = item.getItemMeta();
 					ids.setDisplayName("§a" + Key);
@@ -163,14 +163,14 @@ public class MenuClickListener extends PluginData implements Listener {
 						boolean a = ! SQLUtils.isPeaceState(Bukkit.getOfflinePlayer(Key).getUniqueId().toString());
 						boolean b = ! SQLUtils.isPeaceState(player);
 						boolean c = ! PluginData.PlayerSafeModeManager.getSafeMode(Key);
-						lore.add(" §7- §3对方不和平? " + format(a));
-						lore.add(" §7- §3您不和平? " + format(b));
-						lore.add(" §7- §3对方不被保护? " + format(c));
+						lore.add(" §7- §3对方不和平? " + MenuClickListener.format(a));
+						lore.add(" §7- §3您不和平? " + MenuClickListener.format(b));
+						lore.add(" §7- §3对方不被保护? " + MenuClickListener.format(c));
 						boolean d = a && b && c;
 						//abcd这是没有办法啦，这是临时变量所以随意一些
 						if (! d) item = new ItemStack(Material.REDSTONE_BLOCK);
 						lore.add("");
-						lore.add("§7- §3掠夺 " + format(a && b && c));
+						lore.add("§7- §3掠夺 " + MenuClickListener.format(a && b && c));
 						lore.add("§7- §a点击可传送过去");
 						ids = item.getItemMeta();
 						ids.setDisplayName("§a§地§皮" + Key);
@@ -182,16 +182,16 @@ public class MenuClickListener extends PluginData implements Listener {
 				}
 				return;
 			}
-			if (Item_Name.equalsIgnoreCase("查询奖品")) { return; }
+			if (Item_Name.equalsIgnoreCase("查询奖品")) return;
 
 			if (Item_Name.equalsIgnoreCase("您")) {
 				SQLUtils.DistinguishPlayer(player);
 				player.closeInventory();
-				MenuManager.delete(player);
+				PluginData.MenuManager.delete(player);
 				return;
 			}
 
-			if (Item_Name.indexOf("§c") != - 1) { return; }
+			if (Item_Name.indexOf("§c") != - 1) return;
 			if (Item_Name.indexOf("§a§地§皮") != - 1) {
 				PlayerPlotSquared pp = PlotSquaredAPI.getPrs().get(Item_Name.replace("§a§地§皮", ""));
 				player.teleport(new Location(Bukkit.getWorld(pp.getLoc().getWorld()), pp.getLoc().getX(),
@@ -204,7 +204,7 @@ public class MenuClickListener extends PluginData implements Listener {
 			Map<String, PlayerResidence> reses = ResidenceAPI._getResidences();
 
 			PlayerResidence pr = reses.get(Item_Name.replace("§a", ""));
-			if (pr == null) { return; }
+			if (pr == null) return;
 
 			player.teleport(pr.getLoc());
 			Logger.SendToPlayer(player, SetFiles.getConfig().getString("when_their_tploc"));

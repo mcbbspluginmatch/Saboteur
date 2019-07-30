@@ -25,6 +25,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import net.augcloud.arisa.saboteur.Main;
 import net.augcloud.arisa.saboteur.PluginData;
 import net.augcloud.arisa.saboteur.SetFiles;
+import net.augcloud.arisa.saboteur.logger.Logger;
 
 /**
 @author Arisa
@@ -42,6 +43,7 @@ public class RewardNot_PeacePlayer extends PluginData {
 			Main.plugin.getServer().dispatchCommand(Main.plugin.getServer().getConsoleSender(),
 					cmd.replace("$player", player.getName()));
 		}
+
 	}
 
 	public static void closeRewardPlayer() {
@@ -73,7 +75,7 @@ public class RewardNot_PeacePlayer extends PluginData {
 					if (NotAirPlayer.isEmpty()) { return; }
 					for (Player player : NotAirPlayer) {
 						if (! checkPlayerInventory(player)) {
-							logger.SendToPlayer(player, SetFiles.getConfig().getString("when_PlayerInventoryNotAir"));
+							Logger.SendToPlayer(player, SetFiles.getConfig().getString("when_PlayerInventoryNotAir"));
 							continue;
 						}
 						NotAirPlayer.remove(player);
@@ -109,7 +111,7 @@ public class RewardNot_PeacePlayer extends PluginData {
 						}
 						RewardPlayer(player);
 						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1L, 1L);
-						logger.SendToPlayer(player, SetFiles.getConfig().getString("when_reward_time"));
+						Logger.SendToPlayer(player, SetFiles.getConfig().getString("when_reward_time"));
 					}
 				}
 			}

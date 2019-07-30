@@ -1,12 +1,12 @@
-/**  
+/**
 All rights Reserved, Designed By www.aug.cloud
-UtilsOfMenu.java   
-@Package net.augcloud.arisa.saboteur.menu   
-@Description: 
-@author: Arisa   
-@date:   2019年7月29日 下午6:57:21   
-@version V1.0 
-@Copyright: 2019 
+UtilsOfMenu.java
+@Package net.augcloud.arisa.saboteur.menu
+@Description:
+@author: Arisa
+@date:   2019年7月29日 下午6:57:21
+@version V1.0
+@Copyright: 2019
 */
 package net.augcloud.arisa.saboteur.menu;
 
@@ -24,25 +24,25 @@ public class UtilsOfMenu extends PluginData {
 	public static void OpenMenu(Player player) {
 		player.playSound(player.getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_ON, 1, 1);
 
-		Inventory inv = MenuManager.get(player);
+		Inventory inv = PluginData.MenuManager.get(player);
 		if (inv == null) {
 			MenuSetup menuSetup = new MenuSetup(player);
 			menuSetup.initOfMenu();
 			player.openInventory(menuSetup.getInventory());
-			MenuManager.add(player, menuSetup);
+			PluginData.MenuManager.add(player, menuSetup);
 		} else player.openInventory(inv);
 	}
 
 	public static void CloseMenu(Player player, Inventory inv) {
-		MenuManager.add(player, inv);
+		PluginData.MenuManager.add(player, inv);
 	}
 
 	public static void MenuInits() {
-		MenuManager = new MenuManager();
+		PluginData.MenuManager = new MenuManager();
 	}
 
-	/**   
-	UtilsOfMenu   
+	/**
+	UtilsOfMenu
 	@Description:*/
 	public UtilsOfMenu() {
 	}

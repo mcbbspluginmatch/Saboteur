@@ -15,28 +15,30 @@ public class ActionbarAPI {
 
 	public static void APIInit() {
 
-		nmsver = Bukkit.getServer().getClass().getPackage().getName();
-		nmsver = nmsver.substring(nmsver.lastIndexOf(".") + 1);
+		ActionbarAPI.nmsver = Bukkit.getServer().getClass().getPackage().getName();
+		ActionbarAPI.nmsver = ActionbarAPI.nmsver.substring(ActionbarAPI.nmsver.lastIndexOf(".") + 1);
 
-		if (nmsver.equalsIgnoreCase("v1_8_R1") || nmsver.startsWith("v1_7_")) {
-			useOldMethods = true;
-		}
+		if (ActionbarAPI.nmsver.equalsIgnoreCase("v1_8_R1")
+				|| ActionbarAPI.nmsver.startsWith("v1_7_")) ActionbarAPI.useOldMethods = true;
 
 	}
 
 	public static void sendActionBar(Player player, String message) {
-		if (! player.isOnline()) { return; }
+		if (! player.isOnline()) return;
 
 		try {
-			Class<?> craftPlayerClass = Class.forName("org.bukkit.craftbukkit." + nmsver + ".entity.CraftPlayer");
+			Class<?> craftPlayerClass = Class
+					.forName("org.bukkit.craftbukkit." + ActionbarAPI.nmsver + ".entity.CraftPlayer");
 			Object craftPlayer = craftPlayerClass.cast(player);
 			Object packet;
-			Class<?> packetPlayOutChatClass = Class.forName("net.minecraft.server." + nmsver + ".PacketPlayOutChat");
-			Class<?> packetClass = Class.forName("net.minecraft.server." + nmsver + ".Packet");
-			if (useOldMethods) {
-				Class<?> chatSerializerClass = Class.forName("net.minecraft.server." + nmsver + ".ChatSerializer");
+			Class<?> packetPlayOutChatClass = Class
+					.forName("net.minecraft.server." + ActionbarAPI.nmsver + ".PacketPlayOutChat");
+			Class<?> packetClass = Class.forName("net.minecraft.server." + ActionbarAPI.nmsver + ".Packet");
+			if (ActionbarAPI.useOldMethods) {
+				Class<?> chatSerializerClass = Class
+						.forName("net.minecraft.server." + ActionbarAPI.nmsver + ".ChatSerializer");
 				Class<?> iChatBaseComponentClass = Class
-						.forName("net.minecraft.server." + nmsver + ".IChatBaseComponent");
+						.forName("net.minecraft.server." + ActionbarAPI.nmsver + ".IChatBaseComponent");
 				Method m3 = chatSerializerClass.getDeclaredMethod("a", String.class);
 				Object cbc = iChatBaseComponentClass
 						.cast(m3.invoke(chatSerializerClass, "{\"text\": \"" + message + "\"}"));
@@ -44,19 +46,16 @@ public class ActionbarAPI {
 						.newInstance(cbc, (byte) 2);
 			} else {
 				Class<?> chatComponentTextClass = Class
-						.forName("net.minecraft.server." + nmsver + ".ChatComponentText");
+						.forName("net.minecraft.server." + ActionbarAPI.nmsver + ".ChatComponentText");
 				Class<?> iChatBaseComponentClass = Class
-						.forName("net.minecraft.server." + nmsver + ".IChatBaseComponent");
+						.forName("net.minecraft.server." + ActionbarAPI.nmsver + ".IChatBaseComponent");
 				try {
 					Class<?> chatMessageTypeClass = Class
-							.forName("net.minecraft.server." + nmsver + ".ChatMessageType");
+							.forName("net.minecraft.server." + ActionbarAPI.nmsver + ".ChatMessageType");
 					Object[] chatMessageTypes = chatMessageTypeClass.getEnumConstants();
 					Object chatMessageType = null;
-					for (Object obj : chatMessageTypes) {
-						if (obj.toString().equals("GAME_INFO")) {
-							chatMessageType = obj;
-						}
-					}
+					for (Object obj : chatMessageTypes)
+						if (obj.toString().equals("GAME_INFO")) chatMessageType = obj;
 					Object chatCompontentText = chatComponentTextClass.getConstructor(new Class<?>[] { String.class })
 							.newInstance(message);
 					packet = packetPlayOutChatClass
@@ -82,35 +81,32 @@ public class ActionbarAPI {
 	}
 
 	public static void sendActionBar(final Player player, final String message, int duration) {
-		sendActionBar(player, message);
-		if (duration >= 0) {
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					sendActionBar(player, "");
-				}
+		ActionbarAPI.sendActionBar(player, message);
+		if (duration >= 0) new BukkitRunnable() {
+			@Override
+			public void run() {
+				ActionbarAPI.sendActionBar(player, "");
+			}
 
-			}.runTaskLater(Main.plugin, duration + 1);
-		}
+		}.runTaskLater(Main.plugin, duration + 1);
 
 		while (duration > 10) {
 			duration -= 10;
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					sendActionBar(player, message);
+					ActionbarAPI.sendActionBar(player, message);
 				}
 			}.runTaskLater(Main.plugin, duration);
 		}
 	}
 
 	public static void sendActionBarToAllPlayers(String message) {
-		sendActionBarToAllPlayers(message, - 1);
+		ActionbarAPI.sendActionBarToAllPlayers(message, - 1);
 	}
 
 	public static void sendActionBarToAllPlayers(String message, int duration) {
-		for (Player p : Bukkit.getOnlinePlayers()) {
-			sendActionBar(p, message, duration);
-		}
+		for (Player p : Bukkit.getOnlinePlayers())
+			ActionbarAPI.sendActionBar(p, message, duration);
 	}
 }

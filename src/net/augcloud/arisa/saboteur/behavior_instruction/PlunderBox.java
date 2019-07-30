@@ -1,12 +1,12 @@
-/**  
+/**
 All rights Reserved, Designed By www.aug.cloud
-PlunderBox.java   
-@Package net.augcloud.arisa.saboteur.behavior_instruction   
-@Description: 
-@author: Arisa   
-@date:   2019年7月27日 上午9:18:52   
-@version V1.0 
-@Copyright: 2019 
+PlunderBox.java
+@Package net.augcloud.arisa.saboteur.behavior_instruction
+@Description:
+@author: Arisa
+@date:   2019年7月27日 上午9:18:52
+@version V1.0
+@Copyright: 2019
 */
 package net.augcloud.arisa.saboteur.behavior_instruction;
 
@@ -47,12 +47,12 @@ public class PlunderBox extends PluginData {
 	private static double MinRate = 0.0;
 
 	public static void PlunderRateInit() {
-		MaxRate = SetFiles.getConfig().getDouble("Plunder_MaxRate");
-		MinRate = SetFiles.getConfig().getDouble("Plunder_MinRate");
+		PlunderBox.MaxRate = SetFiles.getConfig().getDouble("Plunder_MaxRate");
+		PlunderBox.MinRate = SetFiles.getConfig().getDouble("Plunder_MinRate");
 	}
 
 	public static double getRate() {
-		return ThreadLocalRandom.current().nextDouble(MinRate, MaxRate);
+		return ThreadLocalRandom.current().nextDouble(PlunderBox.MinRate, PlunderBox.MaxRate);
 	}
 
 	//219 234
@@ -128,7 +128,7 @@ public class PlunderBox extends PluginData {
 		long BrokenerPlunderTime = (Long) block_data.get("plunder_success_date");
 		long PlunderInterval = SetFiles.getConfig().getLong("PlunderBoxInterval") * 1000;
 		long NewTime = new Date().getTime();
-		long SurplusTime = BrokenerPlunderTime + PlunderInterval - NewTime;
+		long SurplusTime = (BrokenerPlunderTime + PlunderInterval) - NewTime;
 		if (SurplusTime > 0) {
 			Logger.SendToPlayer(Brokener, SetFiles.getConfig().getString("when_their_cant_break").replace("$time",
 					String.valueOf(SurplusTime / 1000)));
@@ -144,8 +144,8 @@ public class PlunderBox extends PluginData {
 	}
 
 	public static void CompletePlunder(Player Brokener, Block block) {
-		if (! PlunderCheck(block)) return;
-		if (! PlunderInterval(Brokener, block)) return;
+		if (! PlunderBox.PlunderCheck(block)) return;
+		if (! PlunderBox.PlunderInterval(Brokener, block)) return;
 
 		BlockState BlockState = block.getState();
 		Inventory inv = null;
@@ -182,15 +182,15 @@ public class PlunderBox extends PluginData {
 					PlayerInventory pinv = Brokener.getInventory();
 					int Successfullooting = 0;
 
-					int number = (int) (wholeItem * getRate());
+					int number = (int) (wholeItem * PlunderBox.getRate());
 					int Max = items.length * 2;
 					//两种可能性，箱内物品小于预期物品？不可能!
 					List<Integer> dontCheck = new ArrayList<>();
 					for (; Successfullooting < number;) {
-						int index = randomInt(0, items.length);
+						int index = PlunderBox.randomInt(0, items.length);
 						if (! dontCheck.contains(index)) {
 							ItemStack item = items[index];
-							if (item == null || item.getType().equals(Material.AIR)) {
+							if ((item == null) || item.getType().equals(Material.AIR)) {
 								dontCheck.add(index);
 								continue;
 							}
@@ -214,7 +214,7 @@ public class PlunderBox extends PluginData {
 							world.dropItem(loc, next.getValue());
 						}
 					}
-					UpdataPlunderTime(block);
+					PlunderBox.UpdataPlunderTime(block);
 					Brokener.playSound(Brokener.getLocation(), Sound.BLOCK_ANVIL_BREAK, 1L, 1L);
 					Logger.SendToPlayer(Brokener, SetFiles.getConfig().getString("when_success_breaking2").replace("$a",
 							String.valueOf(Successfullooting) + "(" + number + ")"));

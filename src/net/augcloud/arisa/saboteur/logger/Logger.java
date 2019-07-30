@@ -1,12 +1,12 @@
-/**  
+/**
 All rights Reserved, Designed By www.aug.cloud
-Logger.java   
-@Package net.augcloud.arisa.akits.logger   
-@Description: 
-@author: Arisa   
-@date:   2018年7月23日 上午11:32:22   
-@version V1.0 
-@Copyright: 2018 
+Logger.java
+@Package net.augcloud.arisa.akits.logger
+@Description:
+@author: Arisa
+@date:   2018年7月23日 上午11:32:22
+@version V1.0
+@Copyright: 2018
 */
 package net.augcloud.arisa.saboteur.logger;
 
@@ -23,22 +23,22 @@ public class Logger {
 	private static String Plugin_Prefix = "";
 
 	public static void loginit() {
-		Plugin_Prefix = SetFiles.getConfig().getString("Plugin_Prefix").replaceAll("&", "§");
+		Logger.Plugin_Prefix = SetFiles.getConfig().getString("Plugin_Prefix").replaceAll("&", "§");
 	}
 
-	/**   
-	Logger   
+	/**
+	Logger
 	@Description:  */
 	public Logger() {
 	}
 
 	//发送消息带前缀办法
 	public static void SendToPlayer(Player player, String msg) {
-		player.sendMessage(Plugin_Prefix + msg.replaceAll("&", "§"));
+		player.sendMessage(Logger.Plugin_Prefix + msg.replaceAll("&", "§"));
 	}
 
 	public static void SendToAllPlayer(String msg) {
-		Bukkit.broadcastMessage(Plugin_Prefix + msg.replaceAll("&", "§"));
+		Bukkit.broadcastMessage(Logger.Plugin_Prefix + msg.replaceAll("&", "§"));
 	}
 
 	public void println(String arg) {
@@ -53,10 +53,10 @@ public class Logger {
 		System.out.println("ERROR Saboteur >> " + arg);
 	}
 
-	/**   
-	toString   
-	@Description: 
-	@return   
+	/**
+	toString
+	@Description:
+	@return
 	@see java.lang.Object#toString()*/
 	@Override
 	public String toString() {
@@ -64,11 +64,11 @@ public class Logger {
 		builder.append("Logger [");
 
 		builder.append("getClass()=");
-		builder.append(getClass());
+		builder.append(this.getClass());
 		builder.append(", ");
 
 		builder.append("hashCode()=");
-		builder.append(hashCode());
+		builder.append(this.hashCode());
 		builder.append(", ");
 		if (super.toString() != null) {
 			builder.append("toString()=");

@@ -232,9 +232,9 @@ public class MenuSetup extends Utils {
 		this.setPage(this.getPage() - 1);
 		for (int i = 0, size = 21; i < size; i++ ) {
 
-			if ((this.getPage() * 21) - i < 0) { return; }
+			if (((this.getPage() * 21) - i) < 0) return;
 
-			this.inv.setItem(this.slots[i], this.items.get(this.getPage() * 21 - i));
+			this.inv.setItem(this.slots[i], this.items.get((this.getPage() * 21) - i));
 		}
 	}
 
@@ -242,9 +242,9 @@ public class MenuSetup extends Utils {
 		this.setPage(this.getPage() + 1);
 		for (int i = 0, size = 21; i < size; i++ ) {
 			if (this.items.size() > i) return;
-			if ((this.getPage() * 21) + i >= this.items.size()) { return; }
+			if (((this.getPage() * 21) + i) >= this.items.size()) return;
 
-			this.inv.setItem(this.slots[i], this.items.get(i + this.getPage() * 21));
+			this.inv.setItem(this.slots[i], this.items.get(i + (this.getPage() * 21)));
 		}
 	}
 

@@ -1,12 +1,12 @@
-/**  
+/**
 All rights Reserved, Designed By www.aug.cloud
-AttackQualityMeta.java   
-@Package net.augcloud.arisa.saboteur.behavior_instruction   
-@Description: 
-@author: Arisa   
-@date:   2019年7月26日 上午12:05:46   
-@version V1.0 
-@Copyright: 2019 
+AttackQualityMeta.java
+@Package net.augcloud.arisa.saboteur.behavior_instruction
+@Description:
+@author: Arisa
+@date:   2019年7月26日 上午12:05:46
+@version V1.0
+@Copyright: 2019
 */
 package net.augcloud.arisa.saboteur.behavior_instruction;
 
@@ -28,15 +28,15 @@ public class BlockBreakQualityMeta {
 
 	}
 
-	/**  
-	isCanbebreken 
+	/**
+	isCanbebreken
 	@Description: 外部成员通过getter访问isCanbebreken字段
 	@return: boolean*/
 	public boolean isCanbebreken() {
 		return this.canbebreken;
 	}
 
-	/**  
+	/**
 	@Title:  setCanbebreken
 	@Description: 外部成员通过setter方法修改字段
 	@return: boolean*/
@@ -44,15 +44,15 @@ public class BlockBreakQualityMeta {
 		this.canbebreken = canbebreken;
 	}
 
-	/**  
-	isHasAntiAttackValue 
+	/**
+	isHasAntiAttackValue
 	@Description: 外部成员通过getter访问isHasAntiAttackValue字段
 	@return: boolean*/
 	public boolean isHasAntiAttackValue() {
 		return this.hasAntiAttackValue;
 	}
 
-	/**  
+	/**
 	@Title:  setHasAntiAttackValue
 	@Description: 外部成员通过setter方法修改字段
 	@return: boolean*/
@@ -60,15 +60,15 @@ public class BlockBreakQualityMeta {
 		this.hasAntiAttackValue = hasAntiAttackValue;
 	}
 
-	/**  
-	getAntiAttackValue 
+	/**
+	getAntiAttackValue
 	@Description: 外部成员通过getter访问getAntiAttackValue字段
 	@return: int*/
 	public int getAntiAttackValue() {
 		return this.AntiAttackValue;
 	}
 
-	/**  
+	/**
 	@Title:  setAntiAttackValue
 	@Description: 外部成员通过setter方法修改字段
 	@return: int*/
@@ -76,44 +76,44 @@ public class BlockBreakQualityMeta {
 		this.AntiAttackValue = antiAttackValue;
 	}
 
-	/**   
-	hashCode   
+	/**
+	hashCode
 	@Description:
-	@return   
+	@return
 	@see java.lang.Object#hashCode()*/
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + this.AntiAttackValue;
-		result = prime * result + (this.canbebreken ? 1231 : 1237);
-		result = prime * result + (this.hasAntiAttackValue ? 1231 : 1237);
-		result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
+		result = (prime * result) + this.AntiAttackValue;
+		result = (prime * result) + (this.canbebreken ? 1231 : 1237);
+		result = (prime * result) + (this.hasAntiAttackValue ? 1231 : 1237);
+		result = (prime * result) + ((this.id == null) ? 0 : this.id.hashCode());
 		return result;
 	}
 
-	/**   
-	equals   
+	/**
+	equals
 	@Description:
 	@param obj
-	@return   
+	@return
 	@see java.lang.Object#equals(java.lang.Object)*/
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) { return true; }
-		if (! (obj instanceof BlockBreakQualityMeta)) { return false; }
+		if (this == obj) return true;
+		if (! (obj instanceof BlockBreakQualityMeta)) return false;
 		BlockBreakQualityMeta other = (BlockBreakQualityMeta) obj;
-		if (this.AntiAttackValue != other.AntiAttackValue) { return false; }
-		if (this.canbebreken != other.canbebreken) { return false; }
-		if (this.hasAntiAttackValue != other.hasAntiAttackValue) { return false; }
-		if (this.id != other.id) { return false; }
+		if (this.AntiAttackValue != other.AntiAttackValue) return false;
+		if (this.canbebreken != other.canbebreken) return false;
+		if (this.hasAntiAttackValue != other.hasAntiAttackValue) return false;
+		if (this.id != other.id) return false;
 		return true;
 	}
 
-	/**   
-	toString   
+	/**
+	toString
 	@Description:
-	@return   
+	@return
 	@see java.lang.Object#toString()*/
 	@Override
 	public String toString() {
@@ -134,15 +134,15 @@ public class BlockBreakQualityMeta {
 		return builder.toString();
 	}
 
-	/**  
-	getId 
+	/**
+	getId
 	@Description: 外部成员通过getter访问getId字段
 	@return: Material*/
 	public Material getId() {
 		return this.id;
 	}
 
-	/**  
+	/**
 	@Title:  setId
 	@Description: 外部成员通过setter方法修改字段
 	@return: Material*/

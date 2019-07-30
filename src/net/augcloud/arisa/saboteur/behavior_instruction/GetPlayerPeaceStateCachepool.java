@@ -1,12 +1,12 @@
-/**  
+/**
 All rights Reserved, Designed By www.aug.cloud
-GetPlayerPeaceStateCachepool.java   
-@Package net.augcloud.arisa.saboteur.behavior_instruction   
-@Description: 
-@author: Arisa   
-@date:   2019年7月29日 下午6:45:35   
-@version V1.0 
-@Copyright: 2019 
+GetPlayerPeaceStateCachepool.java
+@Package net.augcloud.arisa.saboteur.behavior_instruction
+@Description:
+@author: Arisa
+@date:   2019年7月29日 下午6:45:35
+@version V1.0
+@Copyright: 2019
 */
 package net.augcloud.arisa.saboteur.behavior_instruction;
 
@@ -64,7 +64,7 @@ public class GetPlayerPeaceStateCachepool extends PluginData {
 
 	public void closeCachePool() {
 		this.stop = true;
-		logger.info("CachePool线程 已停止工作");
+		PluginData.logger.info("CachePool线程 已停止工作");
 	}
 
 	public void startCachePool() {
@@ -72,12 +72,12 @@ public class GetPlayerPeaceStateCachepool extends PluginData {
 			@Override
 			public void run() {
 				synchronized (this) {
-					Cachedata();
+					GetPlayerPeaceStateCachepool.this.Cachedata();
 					if (GetPlayerPeaceStateCachepool.this.stop) this.cancel();
 				}
 			}
 		}.runTaskTimer(Main.plugin, 0, 200);
-		logger.info("CachePool1线程 已开始工作");
+		PluginData.logger.info("CachePool1线程 已开始工作");
 	}
 
 	public void removeThread() {
@@ -86,40 +86,37 @@ public class GetPlayerPeaceStateCachepool extends PluginData {
 			@Override
 			public void run() {
 				synchronized (this) {
-					removeOfflinePlayer();
+					GetPlayerPeaceStateCachepool.this.removeOfflinePlayer();
 					if (GetPlayerPeaceStateCachepool.this.stop) this.cancel();
 				}
 			}
 		}.runTaskTimer(Main.plugin, 200, 400);
-		logger.info("CachePoolClear线程 已开始工作");
+		PluginData.logger.info("CachePoolClear线程 已开始工作");
 	}
 
 	public GetPlayerPeaceStateCachepool() {
 		this.Cachepool = new HashMap<>();
-		startCachePool();
-		removeThread();
+		this.startCachePool();
+		this.removeThread();
 	}
 
 	public void removeOfflinePlayer() {
-		if (this.Cachepool.isEmpty()) { return; }
+		if (this.Cachepool.isEmpty()) return;
 		Collection<? extends Player> Players = Bukkit.getOnlinePlayers();
-		if (Players.isEmpty()) { return; }
+		if (Players.isEmpty()) return;
 		List<String> PlayerNames = new ArrayList<>();
-		for (Player player : Players) {
+		for (Player player : Players)
 			PlayerNames.add(player.getName());
-		}
 		Iterator<Entry<String, Boolean>> data_iter = this.Cachepool.entrySet().iterator();
 		while (data_iter.hasNext()) {
 			String next = data_iter.next().getKey();
-			if (! PlayerNames.contains(next)) {
-				this.Cachepool.remove(next);
-			}
+			if (! PlayerNames.contains(next)) this.Cachepool.remove(next);
 		}
 	}
 
 	public void Cachedata() {
 		Collection<? extends Player> Players = Bukkit.getOnlinePlayers();
-		if (Players.isEmpty()) { return; }
+		if (Players.isEmpty()) return;
 		List<Map<String, Object>> data = StroageUtils.SQLConnection.selectAll("brokenerdata");
 		HashMap<String, Map<String, Object>> p_data = new HashMap<>();
 		for (Map<String, Object> _data : data)
@@ -127,7 +124,7 @@ public class GetPlayerPeaceStateCachepool extends PluginData {
 		for (Player player : Players) {
 			String player_uuid = player.getUniqueId().toString();
 			Map<String, Object> a = p_data.get(player_uuid);
-			if (a == null || a.isEmpty()) continue;
+			if ((a == null) || a.isEmpty()) continue;
 			boolean b = (Integer) a.get("peace_state") == 1 ? true : false;
 			this.Cachepool.put(player.getName(), b);
 		}

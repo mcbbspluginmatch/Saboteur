@@ -1,12 +1,12 @@
-/**  
+/**
 All rights Reserved, Designed By www.aug.cloud
-PlayerQuitListener.java   
-@Package net.augcloud.arisa.saboteur.menu   
-@Description: 
-@author: Arisa   
-@date:   2019年7月30日 下午12:43:23   
-@version V1.0 
-@Copyright: 2019 
+PlayerQuitListener.java
+@Package net.augcloud.arisa.saboteur.menu
+@Description:
+@author: Arisa
+@date:   2019年7月30日 下午12:43:23
+@version V1.0
+@Copyright: 2019
 */
 package net.augcloud.arisa.saboteur.menu;
 
@@ -23,8 +23,8 @@ import net.augcloud.arisa.saboteur.PluginData;
 @date 2019年7月30日 下午12:43:23*/
 public class PlayerQuitListener extends PluginData implements Listener {
 
-	/**   
-	PlayerQuitListener   
+	/**
+	PlayerQuitListener
 	@Description:*/
 	public PlayerQuitListener() {
 	}
@@ -33,7 +33,7 @@ public class PlayerQuitListener extends PluginData implements Listener {
 	public void whenPlayerQuit(PlayerQuitEvent e) {
 		HumanEntity player = e.getPlayer();
 		if (! (player instanceof Player)) return;
-		MenuManager.delete((Player) player);
+		PluginData.MenuManager.delete((Player) player);
 	}
 
 }

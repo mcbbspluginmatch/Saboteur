@@ -1,12 +1,12 @@
-/**  
+/**
 All rights Reserved, Designed By www.aug.cloud
-ActionAPILocalization.java   
-@Package net.augcloud.arisa.saboteur.message_module   
-@Description: 
-@author: Arisa   
-@date:   2019年7月25日 下午10:38:17   
-@version V1.0 
-@Copyright: 2019 
+ActionAPILocalization.java
+@Package net.augcloud.arisa.saboteur.message_module
+@Description:
+@author: Arisa
+@date:   2019年7月25日 下午10:38:17
+@version V1.0
+@Copyright: 2019
 */
 package net.augcloud.arisa.saboteur.message_module;
 

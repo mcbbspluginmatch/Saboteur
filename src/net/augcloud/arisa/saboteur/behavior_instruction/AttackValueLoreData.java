@@ -1,12 +1,12 @@
-/**  
+/**
 All rights Reserved, Designed By www.aug.cloud
-AttackValueLoreData.java   
-@Package net.augcloud.arisa.saboteur.behavior_instruction   
-@Description: 
-@author: Arisa   
-@date:   2019年7月25日 下午10:47:11   
-@version V1.0 
-@Copyright: 2019 
+AttackValueLoreData.java
+@Package net.augcloud.arisa.saboteur.behavior_instruction
+@Description:
+@author: Arisa
+@date:   2019年7月25日 下午10:47:11
+@version V1.0
+@Copyright: 2019
 */
 package net.augcloud.arisa.saboteur.behavior_instruction;
 
@@ -41,7 +41,7 @@ public class AttackValueLoreData {
 
 	//获取武器攻击值
 	public AttackQualityMeta AccordingtoAttackValue(ItemStack item) {
-		if (item == null || ! item.hasItemMeta()) return null;
+		if ((item == null) || ! item.hasItemMeta()) return null;
 		ItemMeta id = item.getItemMeta();
 		if (! id.hasLore()) return null;
 		List<String> Lore = id.getLore();
@@ -55,15 +55,15 @@ public class AttackValueLoreData {
 		return null;
 	}
 
-	/**  
-	getData 
+	/**
+	getData
 	@Description: 外部成员通过getter访问getData字段
 	@return: HashMap<String,Integer>*/
 	public HashMap<String, Integer> getData() {
 		return this.data;
 	}
 
-	/**  
+	/**
 	@Title:  setData
 	@Description: 外部成员通过setter方法修改字段
 	@return: HashMap<String,Integer>*/
@@ -71,41 +71,41 @@ public class AttackValueLoreData {
 		this.data = data;
 	}
 
-	/**   
-	hashCode   
+	/**
+	hashCode
 	@Description:
-	@return   
+	@return
 	@see java.lang.Object#hashCode()*/
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((this.data == null) ? 0 : this.data.hashCode());
+		result = (prime * result) + ((this.data == null) ? 0 : this.data.hashCode());
 		return result;
 	}
 
-	/**   
-	equals   
+	/**
+	equals
 	@Description:
 	@param obj
-	@return   
+	@return
 	@see java.lang.Object#equals(java.lang.Object)*/
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) { return true; }
-		if (obj == null) { return false; }
-		if (! (obj instanceof AttackValueLoreData)) { return false; }
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (! (obj instanceof AttackValueLoreData)) return false;
 		AttackValueLoreData other = (AttackValueLoreData) obj;
 		if (this.data == null) {
-			if (other.data != null) { return false; }
-		} else if (! this.data.equals(other.data)) { return false; }
+			if (other.data != null) return false;
+		} else if (! this.data.equals(other.data)) return false;
 		return true;
 	}
 
-	/**   
-	toString   
+	/**
+	toString
 	@Description:
-	@return   
+	@return
 	@see java.lang.Object#toString()*/
 	@Override
 	public String toString() {

@@ -43,8 +43,8 @@ public class ResidenceAPI extends PluginData {
 	public static boolean stop = false;
 
 	public static void stop() {
-		stop = true;
-		logger.info("ResidenceAPI线程 已关闭!");
+		ResidenceAPI.stop = true;
+		PluginData.logger.info("ResidenceAPI线程 已关闭!");
 	}
 
 	public static void startMenuManagerThread() {
@@ -52,11 +52,11 @@ public class ResidenceAPI extends PluginData {
 			@Override
 			public void run() {
 
-				Updatadata();
-				if (stop) this.cancel();
+				ResidenceAPI.Updatadata();
+				if (ResidenceAPI.stop) this.cancel();
 			}
 		}.runTaskTimer(Main.plugin, 0, 12000);
-		logger.info("ResidenceAPI线程 已启动!");
+		PluginData.logger.info("ResidenceAPI线程 已启动!");
 	}
 
 	public static void resinit() {
@@ -68,38 +68,33 @@ public class ResidenceAPI extends PluginData {
 
 	private static CuboidArea _getAreaByLoc(Location loc, ClaimedResidence _res) {
 		Map<String, CuboidArea> areas = null;
-		Class clazz = _res.getClass();
+		Class<? extends ClaimedResidence> clazz = _res.getClass();
 		try {
 			Field[] fields = clazz.getDeclaredFields();
 			for (Field field : fields) {
 
 				field.setAccessible(true);
-				if (field.getName().equalsIgnoreCase("areas")) {
-					areas = (Map<String, CuboidArea>) field.get(_res);
-				}
+				if (field.getName().equalsIgnoreCase("areas")) areas = (Map<String, CuboidArea>) field.get(_res);
 			}
 		} catch (SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			// why make this exception?
 			e.printStackTrace();
 		}
 
-		if (areas != null) {
-			for (CuboidArea thisarea : areas.values()) {
-				if (thisarea.containsLoc(loc)) { return thisarea; }
-			}
-		}
+		if (areas != null) for (CuboidArea thisarea : areas.values())
+			if (thisarea.containsLoc(loc)) return thisarea;
 		return null;
 	}
 
 	private static Location getMiddleFreeLoc(Location insideLoc, ClaimedResidence _res) {
-		CuboidArea area = _getAreaByLoc(insideLoc, _res);
-		if (area == null) { return insideLoc; }
+		CuboidArea area = ResidenceAPI._getAreaByLoc(insideLoc, _res);
+		if (area == null) return insideLoc;
 
 		int y = area.getHighLoc().getBlockY();
 		int lowY = area.getLowLoc().getBlockY();
 
-		int x = area.getLowLoc().getBlockX() + area.getXSize() / 2;
-		int z = area.getLowLoc().getBlockZ() + area.getZSize() / 2;
+		int x = area.getLowLoc().getBlockX() + (area.getXSize() / 2);
+		int z = area.getLowLoc().getBlockZ() + (area.getZSize() / 2);
 
 		Location newLoc = new Location(area.getWorld(), x + 0.5, y, z + 0.5);
 		boolean found = false;
@@ -121,21 +116,21 @@ public class ResidenceAPI extends PluginData {
 				break;
 			}
 		}
-		return getOutsideFreeLoc(insideLoc, _res);
+		return ResidenceAPI.getOutsideFreeLoc(insideLoc, _res);
 	}
 
 	private static Location getOutsideFreeLoc(Location insideLoc, ClaimedResidence _res) {
-		CuboidArea area = _getAreaByLoc(insideLoc, _res);
-		if (area == null) { return insideLoc; }
+		CuboidArea area = ResidenceAPI._getAreaByLoc(insideLoc, _res);
+		if (area == null) return insideLoc;
 
-		List<RandomLoc> randomLocList = new ArrayList<RandomLoc>();
+		List<RandomLoc> randomLocList = new ArrayList<>();
 
-		for (int z = - 1; z < area.getZSize() + 1; z++ ) {
+		for (int z = - 1; z < (area.getZSize() + 1); z++ ) {
 			randomLocList.add(new RandomLoc(area.getLowLoc().getX(), 0, area.getLowLoc().getZ() + z));
 			randomLocList.add(new RandomLoc(area.getLowLoc().getX() + area.getXSize(), 0, area.getLowLoc().getZ() + z));
 		}
 
-		for (int x = - 1; x < area.getXSize() + 1; x++ ) {
+		for (int x = - 1; x < (area.getXSize() + 1); x++ ) {
 			randomLocList.add(new RandomLoc(area.getLowLoc().getX() + x, 0, area.getLowLoc().getZ()));
 			randomLocList.add(new RandomLoc(area.getLowLoc().getX() + x, 0, area.getLowLoc().getZ() + area.getZSize()));
 		}
@@ -145,7 +140,7 @@ public class ResidenceAPI extends PluginData {
 		boolean found = false;
 		int it = 0;
 		int maxIt = 30;
-		while (! found && it < maxIt) {
+		while (! found && (it < maxIt)) {
 			it++ ;
 
 			Random ran = new Random(System.currentTimeMillis());
@@ -169,9 +164,7 @@ public class ResidenceAPI extends PluginData {
 				Block block2 = loc.clone().add(0, 1, 0).getBlock();
 				Block block3 = loc.clone().add(0, - 1, 0).getBlock();
 				if (! ResidencePlayerListener.isEmptyBlock(block3) && ResidencePlayerListener.isEmptyBlock(block)
-						&& ResidencePlayerListener.isEmptyBlock(block2)) {
-					break;
-				}
+						&& ResidencePlayerListener.isEmptyBlock(block2)) break;
 			}
 		}
 		return loc;
@@ -185,7 +178,7 @@ public class ResidenceAPI extends PluginData {
 		Location high = MainArea.getHighLoc();
 		Location t = new Location(low.getWorld(), (low.getBlockX() + high.getBlockX()) / 2,
 				(low.getBlockY() + high.getBlockY()) / 2, (low.getBlockZ() + high.getBlockZ()) / 2);
-		return getMiddleFreeLoc(t, reses);
+		return ResidenceAPI.getMiddleFreeLoc(t, reses);
 	}
 
 	protected static void Updatadata() {
@@ -196,9 +189,10 @@ public class ResidenceAPI extends PluginData {
 			ClaimedResidence _res = res.getValue();
 			String player_name = _res.getOwner();
 
-			prs.put(player_name, new PlayerResidence(getTeleportLocation(_res), _res.getName()));
+			ResidenceAPI.prs.put(player_name,
+					new PlayerResidence(ResidenceAPI.getTeleportLocation(_res), _res.getName()));
 
-			//貌似不行	
+			//貌似不行
 			//			CuboidArea MainArea = _res.getMainArea();
 			//			Location loc = new Location(MainArea.getWorld(), MainArea.getXSize(), MainArea.getYSize(),
 			//					MainArea.getZSize());
@@ -225,7 +219,7 @@ public class ResidenceAPI extends PluginData {
 	}
 
 	public static Map<String, PlayerResidence> _getResidences() {
-		return prs;
+		return ResidenceAPI.prs;
 	}
 
 	private static Map<String, ClaimedResidence> getResidences() {

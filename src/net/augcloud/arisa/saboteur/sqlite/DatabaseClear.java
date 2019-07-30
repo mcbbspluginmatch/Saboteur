@@ -1,12 +1,12 @@
-/**  
+/**
 All rights Reserved, Designed By www.aug.cloud
-DatabaseClear.java   
-@Package net.augcloud.arisa.saboteur.sqlite   
-@Description: 
-@author: Arisa   
-@date:   2019年7月29日 下午4:21:46   
-@version V1.0 
-@Copyright: 2019 
+DatabaseClear.java
+@Package net.augcloud.arisa.saboteur.sqlite
+@Description:
+@author: Arisa
+@date:   2019年7月29日 下午4:21:46
+@version V1.0
+@Copyright: 2019
 */
 package net.augcloud.arisa.saboteur.sqlite;
 
@@ -26,12 +26,12 @@ public class DatabaseClear extends PluginData {
 	public static boolean closeClear = false;
 
 	public static void closeClear() {
-		logger.info("DatabaseClear数据库清理者 已关闭...");
-		closeClear = true;
+		PluginData.logger.info("DatabaseClear数据库清理者 已关闭...");
+		DatabaseClear.closeClear = true;
 	}
 
-	/**   
-	DatabaseClear   
+	/**
+	DatabaseClear
 	@Description:*/
 	public static void startClear() {
 		new BukkitRunnable() {
@@ -39,18 +39,16 @@ public class DatabaseClear extends PluginData {
 
 			public void run() {
 				List<Map<String, Object>> AllData = StroageUtils.SQLConnection.selectAll("brokenerdata");
-				if (AllData.size() <= 10) { return; }
+				if (AllData.size() <= 10) return;
 				for (int i = 10, size = AllData.size(); i < size; i++ ) {
 					Map<String, Object> data = AllData.get(i);
-					if ((Long) data.get("plunder_success_date") != 0) {
-						continue;
-					}
+					if ((Long) data.get("plunder_success_date") != 0) continue;
 					StroageUtils.SQLConnection.delect("brokenerdata", "id", data.get("id"));
 				}
 				if (DatabaseClear.closeClear) this.cancel();
 			}
 		}.runTaskTimer(Main.plugin, 1200, 1200);
-		logger.info("DatabaseClear数据库清理者 已启动!");
+		PluginData.logger.info("DatabaseClear数据库清理者 已启动!");
 	}
 
 }

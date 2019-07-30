@@ -1,12 +1,12 @@
-/**  
+/**
 All rights Reserved, Designed By www.aug.cloud
-PlayerSafeModeManager.java   
-@Package net.augcloud.arisa.saboteur.behavior_instruction   
-@Description: 
-@author: Arisa   
-@date:   2019年7月27日 下午10:16:49   
-@version V1.0 
-@Copyright: 2019 
+PlayerSafeModeManager.java
+@Package net.augcloud.arisa.saboteur.behavior_instruction
+@Description:
+@author: Arisa
+@date:   2019年7月27日 下午10:16:49
+@version V1.0
+@Copyright: 2019
 */
 package net.augcloud.arisa.saboteur.behavior_instruction;
 
@@ -20,10 +20,10 @@ import org.bukkit.entity.Player;
 @date 2019年7月27日 下午10:16:49*/
 public class PlayerSafeModeManager {
 
-	private List<String> Players;
+	private final List<String> Players;
 
-	/**   
-	PlayerSafeModeManager   
+	/**
+	PlayerSafeModeManager
 	@Description:*/
 	public PlayerSafeModeManager() {
 		this.Players = new ArrayList<>();

@@ -105,8 +105,7 @@ public class PlotSquaredAPI extends PluginData {
 	public static int PlotCanBreken(Player player) {
 		Plot plot = PlotSquaredAPI.getPlot(player.getLocation());
 		if (plot == null) return 0;
-		String PlayerName = player.getName();
-		if (plot.getOwner().equals(PlayerName)) return 2;
+		if (plot.getOwner().equals(player.getUniqueId())) return 2;
 
 		return 1;
 	}
@@ -136,11 +135,10 @@ public class PlotSquaredAPI extends PluginData {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("PlotSquaredAPI [");
-		if (this.getClass() != null) {
-			builder.append("getClass()=");
-			builder.append(this.getClass());
-			builder.append(", ");
-		}
+		builder.append("getClass()=");
+		builder.append(this.getClass());
+		builder.append(", ");
+
 		builder.append("hashCode()=");
 		builder.append(this.hashCode());
 		builder.append(", ");

@@ -20,6 +20,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
+
+import net.augcloud.arisa.saboteur.Main;
 import net.augcloud.arisa.saboteur.PluginData;
 
 /**
@@ -44,7 +47,11 @@ public class SQLConnection extends PluginData {
 			if (! this.connection.isClosed()) PluginData.logger.info("Opened database successfully");
 			this.stmt = this.connection.createStatement();
 		} catch (SQLException e) {
-			// why make this exception?
+			PluginData.logger.info("打开数据库失败!!");
+			PluginData.logger.info("插件即将卸载");
+			PluginData.logger.info("请将报错内容发给作者");
+			Bukkit.getPluginManager().disablePlugin(Main.plugin);
+
 			e.printStackTrace();
 		}
 		this.blockhealthdata = "blockhealthdata";
@@ -52,41 +59,39 @@ public class SQLConnection extends PluginData {
 		this.createTable();
 	}
 
-	private String path;
+	private final String path;
 	private Connection connection = null;
 	private Statement stmt = null;
 	private final String blockhealthdata;
 	private final String brokenerdata;
 
 	public void OpenConnection() {
-		if (this.connection == null) {
-			try {
-				Class.forName("org.sqlite.JDBC");
-				this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.path);
-			} catch (Exception e) {
-				PluginData.logger.info(e.getClass().getName() + ": " + e.getMessage());
-				System.exit(0);
-			}
+		if (this.connection == null) try {
+			Class.forName("org.sqlite.JDBC");
+			this.connection = DriverManager.getConnection("jdbc:sqlite:" + this.path);
+		} catch (Exception e) {
+			PluginData.logger.info(e.getClass().getName() + ": " + e.getMessage());
+			System.exit(0);
 		}
 		try {
 			this.stmt = this.connection.createStatement();
 		} catch (SQLException e) {
-			// why make this exception?
+			PluginData.logger.info("打开连接失败!!");
+			PluginData.logger.info("请将报错内容发给作者");
 			e.printStackTrace();
 		}
 	}
 
 	public void closeConnection() {
 		try {
-			if (! this.connection.isClosed()) {
-				try {
-					this.stmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+			if (! this.connection.isClosed()) try {
+				this.stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
 		} catch (SQLException e) {
-			// why make this exception?
+			PluginData.logger.info("关闭连接失败!!");
+			PluginData.logger.info("请将报错内容发给作者");
 			e.printStackTrace();
 		}
 	}
@@ -97,8 +102,8 @@ public class SQLConnection extends PluginData {
 		String createServerkit = "CREATE TABLE If not exists " + this.blockhealthdata + " "
 				+ "(ID INTEGER PRIMARY KEY     NOT NULL," //占位
 				+ " location           TEXT    NOT NULL, "//location位置，可自写个序列化
-				+ " health            INTEGER     NOT NULL, "//方块剩余生命值	
-				+ " state            INTEGER     NOT NULL, "//是否破坏，boolean 0 ->false 1 ->true 
+				+ " health            INTEGER     NOT NULL, "//方块剩余生命值
+				+ " state            INTEGER     NOT NULL, "//是否破坏，boolean 0 ->false 1 ->true
 				+ " last_broken_date            BIGINT, "//可留空，转成数字存储日期
 				+ " brokener_uuid            TEXT,"//可留空 破坏者的uuid
 				+ " plunder_success_date			BIGINT)"; //箱子掠夺日期
@@ -146,12 +151,12 @@ public class SQLConnection extends PluginData {
 	}
 
 	//改
-	/**   
-	getdata   
+	/**
+	getdata
 	@Description:
 	@param TableName
 	@param rs
-	@return     
+	@return
 	Map<String,Object>*/
 	public Map<String, Object> getdata(String TableName, ResultSet rs) {
 		Map<String, Object> data = new HashMap<>();
@@ -179,7 +184,8 @@ public class SQLConnection extends PluginData {
 					break;
 			}
 		} catch (SQLException e) {
-			// why make this exception?
+			PluginData.logger.info("读取数据库失败!!");
+			PluginData.logger.info("请将报错内容发给作者");
 			e.printStackTrace();
 
 		}
@@ -192,13 +198,13 @@ public class SQLConnection extends PluginData {
 		try {
 			this.stmt = this.connection.createStatement();
 			ResultSet rs = this.stmt.executeQuery("SELECT * FROM " + TableName);
-			while (rs.next()) {
-				result.add(getdata(TableName, rs));
-			}
+			while (rs.next())
+				result.add(this.getdata(TableName, rs));
 			rs.close();
 			this.closeConnection();
 		} catch (SQLException e) {
-			// why make this exception?
+			PluginData.logger.info("读取数据库失败!!");
+			PluginData.logger.info("请将报错内容发给作者");
 			e.printStackTrace();
 		}
 		return result;
@@ -224,25 +230,25 @@ public class SQLConnection extends PluginData {
 	//
 	//	}
 
-	/**   
-	containsKey   
-	@Description: 
+	/**
+	containsKey
+	@Description:
 	@param TableName
 	@param Column
 	@param arg
-	@return     
+	@return
 	boolean*/
 	public boolean containsKey(String TableName, String Column, Object arg) {
-		return select(TableName, Column, arg).isEmpty() ? false : true;
+		return this.select(TableName, Column, arg).isEmpty() ? false : true;
 	}
 
-	/**   
-	select   
-	@Description: 从数据库中获取数据，如果没有则返回null 
+	/**
+	select
+	@Description: 从数据库中获取数据，如果没有则返回null
 	@param TableName 表名
 	@param Column 数据库字段名
 	@param arg 参考数据
-	@return  
+	@return
 	Map<String,Object>*/
 	public Map<String, Object> select(String TableName, String Column, Object arg) {
 		this.OpenConnection();
@@ -257,37 +263,33 @@ public class SQLConnection extends PluginData {
 		try {
 			this.stmt = this.connection.createStatement();
 			ResultSet rs = this.stmt.executeQuery("SELECT * FROM " + TableName);
-			while (rs.next()) {
+			while (rs.next())
 				if (isNumber) {
 					int id = rs.getInt(Column);
-					if (id == arg_int) {
-						value = getdata(TableName, rs);
-					}
+					if (id == arg_int) value = this.getdata(TableName, rs);
 				} else {
 					String str = rs.getString(Column);
-					if (arg_string.equals(str)) {
-						value = getdata(TableName, rs);
-					}
+					if (arg_string.equals(str)) value = this.getdata(TableName, rs);
 				}
-			}
 			rs.close();
 			this.closeConnection();
 		} catch (SQLException e) {
-			// why make this exception?
+			PluginData.logger.info("读取数据库失败!!");
+			PluginData.logger.info("请将报错内容发给作者");
 			e.printStackTrace();
 		}
 		return value;
 	}
 
-	/**   
-	_select   
+	/**
+	_select
 	@Description:
 	@param TableName
 	@param Column
 	@param arg
 	@param Column2
 	@param arg2
-	@return     
+	@return
 	Map<String,Object>*/
 	public Map<String, Object> _select(String TableName, String Column, Object arg, String Column2, Object arg2) {
 		this.OpenConnection();
@@ -307,39 +309,34 @@ public class SQLConnection extends PluginData {
 				if (isNumber) {
 					int id = rs.getInt(Column);
 
-					if (id == arg_int) {
-						value = getdata(TableName, rs);
-					}
+					if (id == arg_int) value = this.getdata(TableName, rs);
 				} else {
 					String str = rs.getString(Column);
-					if (arg_string.equals(str)) {
-						value = getdata(TableName, rs);
-					}
+					if (arg_string.equals(str)) value = this.getdata(TableName, rs);
 				}
 				data.add(value);
 			}
 			rs.close();
 			this.closeConnection();
 		} catch (SQLException e) {
-			// why make this exception?
+			PluginData.logger.info("读取数据库失败!!");
+			PluginData.logger.info("请将报错内容发给作者");
 			e.printStackTrace();
 		}
-		for (Map<String, Object> map : data) {
+		for (Map<String, Object> map : data)
 			if (map.get(Column2).equals(arg2)) return map;
-
-		}
 		return null;
 	}
 
-	/**   
-	updata   
+	/**
+	updata
 	@Description:  更新数据库数据，成功返回true，失败返回false
 	@param TableName 表名
 	@param Column 数据列名
 	@param arg 参考位置
 	@param Columnvalue 修改数据列名
 	@param value 修改值
-	@return     
+	@return
 	boolean*/
 	public boolean updata(String TableName, String Columnvalue, Object value, String Column, Object arg) {
 		StringBuilder sb = new StringBuilder("UPDATE ");
@@ -355,15 +352,15 @@ public class SQLConnection extends PluginData {
 		return this.execute(sb.toString(), false);
 	}
 
-	/**   
-	updata   
+	/**
+	updata
 	@Description:  更新数据库数据，成功返回true，失败返回false
 	@param TableName 表名
 	@param Column 数据列名
 	@param arg 参考位置
 	@param Columnvalue 修改数据列名
 	@param value 修改值
-	@return     
+	@return
 	boolean*/
 	public boolean _updata(String TableName, String Columnvalue, Object value, String Column, Object arg) {
 		StringBuilder sb = new StringBuilder("UPDATE ");
@@ -379,15 +376,15 @@ public class SQLConnection extends PluginData {
 		return this.execute(sb.toString(), false);
 	}
 
-	/**   
-	updata   
+	/**
+	updata
 	@Description:  更新数据库数据，成功返回true，失败返回false
 	@param TableName 表名
 	@param Column 数据列名
 	@param arg 参考位置
 	@param Columnvalue 修改数据列名
 	@param value 修改值
-	@return     
+	@return
 	boolean*/
 	public boolean __updata(String TableName, String Column, Object arg, String Columnvalue, Object value) {
 		StringBuilder sb = new StringBuilder("UPDATE ");
@@ -404,20 +401,20 @@ public class SQLConnection extends PluginData {
 		return this.execute(sb.toString(), false);
 	}
 
-	/**   
-	delect   
+	/**
+	delect
 	@Description: 移除数据库的一条记录，成功返回true，失败返回false
 	@param TableName 表名
 	@param Column 数据列名
 	@param arg 参考的数据
-	@return     
+	@return
 	boolean*/
 	public boolean delect(String TableName, String Column, Object arg) {
 		StringBuilder sb = new StringBuilder("DELETE from ");
 		sb.append(TableName).append(" where ").append(Column);
 		if (arg instanceof String) sb.append(" = '").append(arg).append("'");
 		else sb.append(" = '").append(String.valueOf(arg)).append("'");
-		return execute(sb.toString(), false);
+		return this.execute(sb.toString(), false);
 	}
 
 	public boolean execute(String sql, boolean useupdata) {
@@ -434,13 +431,14 @@ public class SQLConnection extends PluginData {
 			execute可以执行查询语句
 			然后通过getResultSet，把结果集取出来
 			executeUpdate不能执行查询语句
-			
+
 			不同2:
 			execute返回boolean类型，true表示执行的是查询语句，false表示执行的是insert,delete,update等等
 			executeUpdate返回的是int，表示有多少条数据受到了影响
 			 */
 		} catch (SQLException e) {
-			// why make this exception?
+			PluginData.logger.info("执行sql指令失败");
+			PluginData.logger.info("请将报错内容发给作者");
 			e.printStackTrace();
 		}
 		this.closeConnection();
